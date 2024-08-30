@@ -85,7 +85,7 @@
                         const noDataMessage = document.createElement('tr');
                         const noDataCell = document.createElement('td');
                         noDataCell.textContent = 'No hay datos disponibles para esta vista.';
-                        noDataCell.colSpan = 3; // Asumimos que podría tener al menos 3 columnas
+                        noDataCell.colSpan = 3;
                         noDataMessage.appendChild(noDataCell);
                         tableBody.appendChild(noDataMessage);
                     }

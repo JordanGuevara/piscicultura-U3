@@ -100,6 +100,26 @@ app.post('/api/pedidos', express.json(), async (req, res) => {
       res.status(500).send('Error al agregar el pedido');
   }
 });
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Ruta para obtener los datos de la base de datos
+app.get('/datos', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT ed.id_estanque, COUNT(*) AS cantidad_peces
+      FROM Cosecha.Estanques_Detalle ed
+      JOIN Cosecha.Peces p ON ed.pez_id = p.id_pez
+      GROUP BY ed.id_estanque
+    `);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error al obtener los datos de la base de datos');
+  }
+});
+
 
 // Endpoint para obtener los datos de una vista específica de PostgreSQL
 app.get('/api/views', async (req, res) => {

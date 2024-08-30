@@ -35,8 +35,11 @@
       </div>
     <h2>Ingresa el nombre del pez que deseas buscar</h2>
     <input type="text" id="search" placeholder="Buscar por nombre...">
+    <div id="chart-container">
+        <canvas id="myChart"></canvas>
+    </div>
     <ul id="peces-list"></ul>
-
+    
     <footer class="footer">
         <div class="footer-section logo-section">
             <img style="width: 150px; height: 150px;"  src="img/pesca_logo-removebg-preview.png" alt="Logo de BeastComplay">
@@ -58,7 +61,48 @@
             <a href="#">Ayuda</a>
         </div>
     </footer>
+    
 
+    <!-- Incluir la librería de Chart.js desde la CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Función para cargar los datos desde el servidor y crear el gráfico
+        async function crearGrafico() {
+            try {
+                const response = await fetch('/datos');
+                const data = await response.json();
+
+                const labels = data.map(item => `Estanque ${item.id_estanque}`);
+                const valores = data.map(item => item.cantidad_peces);
+
+                const ctx = document.getElementById('myChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Cantidad de Peces por Estanque',
+                            data: valores,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error('Error al cargar los datos:', error);
+            }
+        }
+
+        window.onload = crearGrafico;
+    </script>
     <script src="javascript/script-general.js"></script>
     <script>
         async function fetchPeces() {
