@@ -16,4 +16,7 @@ app.get('/api/views', async (req, res) => {
         console.error('Error ejecutando la consulta:', err);
         res.status(500).send('Error al obtener los datos de la vista.');
     }
-});
+}); 
+
+
+
